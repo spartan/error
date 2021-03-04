@@ -43,7 +43,20 @@
     "config": {
         "sort-packages": true
     },
-    "scripts": {
+    "extra": {
+        "spartan": {
+            "install": {
+                "env": {
+                    "ERROR_REPORT": "E_ALL"
+                },
+                "copy": {
+                    "config/errors.php": "config/errors.php"
+                },
+                "services": [
+                    "Spartan\\Error\\ServiceProvider::class"
+                ]
+            }
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
