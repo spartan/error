@@ -1,4 +1,11 @@
 # Changelog
+### [0.1.2](https://github.com/spartan/error/compare/v0.1.1...v0.1.2) (2021-03-07)
+
+
+### Fixes
+
+* service provider use $response on all handlers ([944e5df](https://github.com/spartan/error/commit/944e5df2eb0e50f2370c9674388508d70c9fed51))
+
 ### [0.1.1](https://github.com/spartan/error/compare/v0.1.0...v0.1.1) (2021-03-04)
 
 
