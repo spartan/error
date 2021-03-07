@@ -72,7 +72,7 @@ class ServiceProvider implements ProviderInterface
                         } elseif ($handler instanceof ResponseHandlerInterface) {
                             $response = $handler->handle($exception, $response);
                         } else {
-                            $container->get($handler)->handle($exception);
+                            $container->get($handler)->handle($exception, $response);
                         }
                     }
                 } catch (\Throwable $e) {
