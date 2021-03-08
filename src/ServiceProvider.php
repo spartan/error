@@ -28,7 +28,7 @@ class ServiceProvider implements ProviderInterface
     {
         error_reporting(E_ALL);
 
-        $mappings = require_once './config/errors.php';
+        $mappings = require './config/errors.php';
 
         set_exception_handler(
             function (\Throwable $exception) use ($mappings, $container): void {
@@ -39,26 +39,17 @@ class ServiceProvider implements ProviderInterface
                 $interfaces = array_flip(
                     [
                         $exceptionName,
+                        get_parent_class($exceptionName),
                         ...array_values(class_implements($exception)),
                     ]
                 );
 
-                foreach ($mappings as $mappedExceptionClass => $handlers) {
+                foreach ($mappings as $mappedExceptionClass => $mappedHandlers) {
                     if (isset($interfaces[$mappedExceptionClass])) {
                         $handlers = [
                             ...$handlers,
-                            ...(array)$interfaces[$mappedExceptionClass],
+                            ...$mappedHandlers
                         ];
-                    } elseif (substr($mappedExceptionClass, -1) == '*') {
-                        $mappedExceptionClass = substr($mappedExceptionClass, 0, -1);
-                        foreach ($interfaces as $interface) {
-                            if (strpos($interface, $mappedExceptionClass) === 0) {
-                                $handlers = [
-                                    ...$handlers,
-                                    ...(array)$interfaces[$mappedExceptionClass],
-                                ];
-                            }
-                        }
                     }
                 }
 
@@ -68,11 +59,15 @@ class ServiceProvider implements ProviderInterface
                         if ($handler === false) {
                             break;
                         } elseif ($handler instanceof \Closure) {
-                            $handler($exception, $response);
+                            $result = $handler($exception, $response);
                         } elseif ($handler instanceof ResponseHandlerInterface) {
-                            $response = $handler->handle($exception, $response);
+                            $result = $handler->handle($exception, $response);
                         } else {
-                            $container->get($handler)->handle($exception, $response);
+                            $result = $container->get($handler)->handle($exception, $response);
+                        }
+
+                        if ($result instanceof ResponseInterface) {
+                            $response = $result;
                         }
                     }
                 } catch (\Throwable $e) {
