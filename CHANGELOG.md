@@ -1,4 +1,11 @@
 # Changelog
+### [0.1.4](https://github.com/spartan/error/compare/v0.1.3...v0.1.4) (2021-03-13)
+
+
+### Fixes
+
+* handler list with exceptions without interfaces ([286230d](https://github.com/spartan/error/commit/286230de67789c58c26c329e3554bb45eabf50cb))
+
 ### [0.1.3](https://github.com/spartan/error/compare/v0.1.2...v0.1.3) (2021-03-08)
 
 
