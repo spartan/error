@@ -37,11 +37,13 @@ class ServiceProvider implements ProviderInterface
                 $exceptionName = get_class($exception);
 
                 $interfaces = array_flip(
-                    [
-                        $exceptionName,
-                        get_parent_class($exceptionName),
-                        ...array_values(class_implements($exception)),
-                    ]
+                    array_filter(
+                        [
+                            $exceptionName,
+                            get_parent_class($exceptionName),
+                            ...array_values(class_implements($exception)),
+                        ]
+                    )
                 );
 
                 foreach ($mappings as $mappedExceptionClass => $mappedHandlers) {
